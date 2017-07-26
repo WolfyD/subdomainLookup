@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace subdomainLookup.Properties
-{
-
-
+namespace subdomainLookup.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -22,49 +22,445 @@ namespace subdomainLookup.Properties
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources
-    {
-
+    internal class Resources {
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources()
-        {
+        internal Resources() {
         }
-
+        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager
-        {
-            get
-            {
-                if ((resourceMan == null))
-                {
+        internal static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("subdomainLookup.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture
-        {
-            get
-            {
+        internal static global::System.Globalization.CultureInfo Culture {
+            get {
                 return resourceCulture;
             }
-            set
-            {
+            set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to www
+        ///mail
+        ///remote
+        ///blog
+        ///webmail
+        ///server
+        ///ns1
+        ///ns2
+        ///smtp
+        ///secure
+        ///vpn
+        ///m
+        ///shop
+        ///ftp
+        ///mail2
+        ///test
+        ///portal
+        ///ns
+        ///ww1
+        ///host
+        ///support
+        ///dev
+        ///web
+        ///bbs
+        ///ww42
+        ///mx
+        ///email
+        ///cloud
+        ///1
+        ///mail1
+        ///2
+        ///forum
+        ///owa
+        ///www2
+        ///gw
+        ///admin
+        ///store
+        ///mx1
+        ///cdn
+        ///api
+        ///exchange
+        ///app
+        ///gov
+        ///2tty
+        ///vps
+        ///govyty
+        ///hgfgdf
+        ///news
+        ///1rer
+        ///lkjkui
+        ///hfgfgf
+        ///yty
+        ///lkljk
+        ///server1
+        ///zcvbnnn
+        ///dsasa
+        ///my
+        ///demo
+        ///tgrrre
+        ///home
+        ///wxsxc
+        ///static
+        ///tgtggb
+        ///staging
+        ///oilkjm
+        ///wqwqw
+        ///mkuu
+        ///iuyuy
+        ///rerew
+        ///iuyuyt
+        ///khjghg
+        ///qwqee
+        ///mx2
+        ///qwrer
+        ///mjurr
+        ///qwqwq
+        ///office
+        ///ssl
+        ///intranet
+        ///media
+        ///sip
+        ///mobile
+        ///wiki
+        ///autodiscover
+        ///login
+        ///en
+        ///beta
+        ///gateway
+        ///ns3
+        ///images
+        ///apps
+        ///citrix
+        ///bai [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string popular_1000 {
+            get {
+                return ResourceManager.GetString("popular_1000", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to www
+        ///mail
+        ///remote
+        ///blog
+        ///webmail
+        ///server
+        ///ns1
+        ///ns2
+        ///smtp
+        ///secure
+        ///vpn
+        ///m
+        ///shop
+        ///ftp
+        ///mail2
+        ///test
+        ///portal
+        ///ns
+        ///ww1
+        ///host
+        ///support
+        ///dev
+        ///web
+        ///bbs
+        ///ww42
+        ///mx
+        ///email
+        ///cloud
+        ///1
+        ///mail1
+        ///2
+        ///forum
+        ///owa
+        ///www2
+        ///gw
+        ///admin
+        ///store
+        ///mx1
+        ///cdn
+        ///api
+        ///exchange
+        ///app
+        ///gov
+        ///2tty
+        ///vps
+        ///govyty
+        ///hgfgdf
+        ///news
+        ///1rer
+        ///lkjkui
+        ///hfgfgf
+        ///yty
+        ///lkljk
+        ///server1
+        ///zcvbnnn
+        ///dsasa
+        ///my
+        ///demo
+        ///tgrrre
+        ///home
+        ///wxsxc
+        ///static
+        ///tgtggb
+        ///staging
+        ///oilkjm
+        ///wqwqw
+        ///mkuu
+        ///iuyuy
+        ///rerew
+        ///iuyuyt
+        ///khjghg
+        ///qwqee
+        ///mx2
+        ///qwrer
+        ///mjurr
+        ///qwqwq
+        ///office
+        ///ssl
+        ///intranet
+        ///media
+        ///sip
+        ///mobile
+        ///wiki
+        ///autodiscover
+        ///login
+        ///en
+        ///beta
+        ///gateway
+        ///ns3
+        ///images
+        ///apps
+        ///citrix
+        ///bai [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string popular_10000 {
+            get {
+                return ResourceManager.GetString("popular_10000", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to www
+        ///mail
+        ///remote
+        ///blog
+        ///webmail
+        ///server
+        ///ns1
+        ///ns2
+        ///smtp
+        ///secure
+        ///vpn
+        ///m
+        ///shop
+        ///ftp
+        ///mail2
+        ///test
+        ///portal
+        ///ns
+        ///ww1
+        ///host
+        ///support
+        ///dev
+        ///web
+        ///bbs
+        ///ww42
+        ///mx
+        ///email
+        ///cloud
+        ///1
+        ///mail1
+        ///2
+        ///forum
+        ///owa
+        ///www2
+        ///gw
+        ///admin
+        ///store
+        ///mx1
+        ///cdn
+        ///api
+        ///exchange
+        ///app
+        ///gov
+        ///2tty
+        ///vps
+        ///govyty
+        ///hgfgdf
+        ///news
+        ///1rer
+        ///lkjkui
+        ///hfgfgf
+        ///yty
+        ///lkljk
+        ///server1
+        ///zcvbnnn
+        ///dsasa
+        ///my
+        ///demo
+        ///tgrrre
+        ///home
+        ///wxsxc
+        ///static
+        ///tgtggb
+        ///staging
+        ///oilkjm
+        ///wqwqw
+        ///mkuu
+        ///iuyuy
+        ///rerew
+        ///iuyuyt
+        ///khjghg
+        ///qwqee
+        ///mx2
+        ///qwrer
+        ///mjurr
+        ///qwqwq
+        ///office
+        ///ssl
+        ///intranet
+        ///media
+        ///sip
+        ///mobile
+        ///wiki
+        ///autodiscover
+        ///login
+        ///en
+        ///beta
+        ///gateway
+        ///ns3
+        ///images
+        ///apps
+        ///citrix
+        ///bai [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string popular_100000 {
+            get {
+                return ResourceManager.GetString("popular_100000", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to www
+        ///mail
+        ///remote
+        ///blog
+        ///webmail
+        ///server
+        ///ns1
+        ///ns2
+        ///smtp
+        ///secure
+        ///vpn
+        ///m
+        ///shop
+        ///ftp
+        ///mail2
+        ///test
+        ///portal
+        ///ns
+        ///ww1
+        ///host
+        ///support
+        ///dev
+        ///web
+        ///bbs
+        ///ww42
+        ///mx
+        ///email
+        ///cloud
+        ///1
+        ///mail1
+        ///2
+        ///forum
+        ///owa
+        ///www2
+        ///gw
+        ///admin
+        ///store
+        ///mx1
+        ///cdn
+        ///api
+        ///exchange
+        ///app
+        ///gov
+        ///2tty
+        ///vps
+        ///govyty
+        ///hgfgdf
+        ///news
+        ///1rer
+        ///lkjkui
+        ///hfgfgf
+        ///yty
+        ///lkljk
+        ///server1
+        ///zcvbnnn
+        ///dsasa
+        ///my
+        ///demo
+        ///tgrrre
+        ///home
+        ///wxsxc
+        ///static
+        ///tgtggb
+        ///staging
+        ///oilkjm
+        ///wqwqw
+        ///mkuu
+        ///iuyuy
+        ///rerew
+        ///iuyuyt
+        ///khjghg
+        ///qwqee
+        ///mx2
+        ///qwrer
+        ///mjurr
+        ///qwqwq
+        ///office
+        ///ssl
+        ///intranet
+        ///media
+        ///sip
+        ///mobile
+        ///wiki
+        ///autodiscover
+        ///login
+        ///en
+        ///beta
+        ///gateway
+        ///ns3
+        ///images
+        ///apps
+        ///citrix
+        ///bai [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string popular_1000000 {
+            get {
+                return ResourceManager.GetString("popular_1000000", resourceCulture);
             }
         }
     }

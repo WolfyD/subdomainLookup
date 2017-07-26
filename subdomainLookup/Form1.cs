@@ -22,6 +22,7 @@ namespace subdomainLookup
         public string currentSet = "";
         public int currentLen = 1;
         public int charset = 5;
+        public int delay = 200;
 
         Thread t = null;
 
@@ -32,6 +33,8 @@ namespace subdomainLookup
         HttpWebRequest req = null;
 
         public string _URL_ = "";
+
+        public string[] words = null;
 
         public string[] uas = new string[] {
             "Mozilla/5.0 (Windows NT [VER1]; Win64; x64) AppleWebKit/[VER1] (KHTML, like Gecko) Chrome/[VER3] Safari/[VER1]",
@@ -62,16 +65,84 @@ namespace subdomainLookup
         public Form1()
         {
             InitializeComponent();
+
+            Load += Form1_Load;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            loadSettings();
+        }
+
+        public void loadSettings()
+        {
+            tc_Tabs.SelectedIndex = Properties.Settings.Default.s_LastMode;
+            tb_ListFile.Text = Properties.Settings.Default.s_ListFile;
+
+            if (!Directory.Exists("lists")) { Directory.CreateDirectory("lists"); }
+
+            if (!File.Exists("lists/popular_1000")) { File.WriteAllText("lists/popular_1000", Properties.Resources.popular_1000); }
+            if (!File.Exists("lists/popular_10000")) { File.WriteAllText("lists/popular_10000", Properties.Resources.popular_10000); }
+            if (!File.Exists("lists/popular_100000")) { File.WriteAllText("lists/popular_100000", Properties.Resources.popular_100000); }
+            if (!File.Exists("lists/popular_1000000")) { File.WriteAllText("lists/popular_1000000", Properties.Resources.popular_1000000); }
+
+
+            if (tb_ListFile.Text != "" && File.Exists(tb_ListFile.Text))
+            {
+                words = File.ReadAllLines(tb_ListFile.Text);
+            }
+
+            tb_Domain.Text = Properties.Settings.Default.s_LastUrl;
+        }
+
+        public void startList()
+        {
+            pagesFound = 0;
+
+            for (int i = 0; i < words.Length; i++)
+            {
+                Thread.Sleep(delay);
+                
+
+                if (!run)
+                {
+                    break;
+                }
+
+                _URL_ = tb_Domain.Text + "/" + words[i];
+
+                var req = getreq(_URL_);
+                req.UserAgent = generateUA();
+
+                try
+                {
+                    if (i == 1 || i % 5 == 0)
+                    {
+                        this.Invoke(new myDelegate(refreshDataList), i + "", pagesFound + "", "");
+                    }
+
+                    var resp = (HttpWebResponse)req.GetResponse();
+
+                    pagesFound++;
+
+
+                    this.Invoke(new myDelegate(fillList), i + "", words[i], _URL_);
+                }
+                catch { }
+            }
+
+            t = null;
         }
 
         public void startBrute()
         {
+            pagesFound = 0;
             c_set.setupCharset(charset, out chars, out len);
             int i = 0;
 
             while (true)
             {
-                Thread.Sleep(50);
+                Thread.Sleep(10);
 
                 i++;
 
@@ -92,7 +163,7 @@ namespace subdomainLookup
                 {
                     if (i == 1 || i % 5 == 0)
                     {
-                        this.Invoke(new myDelegate(refreshData), i + "", currentSet, "");
+                        this.Invoke(new myDelegate(refreshDataBrute), i + "", currentSet, "");
                     }
 
                     var resp = (HttpWebResponse)req.GetResponse();
@@ -100,17 +171,31 @@ namespace subdomainLookup
                     pagesFound++;
                     
 
-                    this.Invoke(new myDelegate(fillBrute), i + "", currentSet, _URL_);
+                    this.Invoke(new myDelegate(fillList), i + "", currentSet, _URL_);
                 }
                 catch { }
             }
+
+            t = null;
         }
 
         public delegate void myDelegate(string s1, string s2, string s3);
-        public void refreshData(string s1, string s2, string s3)
+        public void refreshDataBrute(string s1, string s2, string s3)
         {
             lbl_Pages.Text = s1 + "/" + pagesFound;
             tb_At.Text = s2;
+        }
+        public void refreshDataList(string s1, string s2, string s3)
+        {
+            lbl_List_Index.Text = s1;
+            lbl_List_Subs.Text = s2;
+
+            int i1 = 0;
+            int i2 = 0;
+            int.TryParse(s1, out i1);
+            int.TryParse(s2, out i2);
+            
+            lbl_Percent.Text = (((100 * 1.0f) / (i1 * 1.0f)) * i2) + "%";
         }
         public void fillBrute(string s1, string s2, string s3)
         {
@@ -125,11 +210,29 @@ namespace subdomainLookup
 
             lv_Brute.Refresh();
 
-            if (!File.Exists("tmp.txt")) { File.Create("tmp.txt").Close(); }
-            if (!File.Exists("tmp2.txt")) { File.Create("tmp2.txt").Close(); }
+            if (!File.Exists("brute_tmp.txt")) { File.Create("brute_tmp.txt").Close(); }
+            if (!File.Exists("brute_tmp2.txt")) { File.Create("brute_tmp2.txt").Close(); }
 
-            File.AppendAllText("tmp.txt", s3 + "\r\n");
-            File.AppendAllText("tmp2.txt", DateTime.Now.ToShortTimeString().PadRight(10) + " - " + s1.PadLeft(5,'0') + " - " + s2.PadRight(10,' ') + "\t - \t" + s3 + "\r\n");
+            File.AppendAllText("brute_tmp.txt", s3 + "\r\n");
+            File.AppendAllText("brute_tmp2.txt", DateTime.Now.ToShortTimeString().PadRight(10) + " - " + s1.PadLeft(6, '0') + " - " + s2.PadRight(10, ' ') + "\t - \t" + s3 + "\r\n");
+
+        }
+        public void fillList(string s1, string s2, string s3)
+        {
+            var lvi = new ListViewItem();
+            lvi.Text = s1;
+            lvi.SubItems.Add(s2);
+            lvi.SubItems.Add(s3);
+
+            lvi.BackColor = (lv_Brute.Items.Count % 2 == 0 ? Color.LightYellow : Color.LightGray);
+            lv_List.Items.Add(lvi);
+            lv_List.Refresh();
+
+            if (!File.Exists("list_tmp.txt")) { File.Create("list_tmp.txt").Close(); }
+            if (!File.Exists("list_tmp2.txt")) { File.Create("list_tmp2.txt").Close(); }
+
+            File.AppendAllText("list_tmp.txt", s3 + "\r\n");
+            File.AppendAllText("list_tmp2.txt", DateTime.Now.ToShortTimeString().PadRight(10) + " - " + s1.PadLeft(6, '0') + " - " + s2.PadRight(10, ' ') + "\t - \t" + s3 + "\r\n");
 
         }
 
@@ -173,7 +276,7 @@ namespace subdomainLookup
         {
             string ver = "";
 
-            Thread.Sleep(50);
+            Thread.Sleep(5);
 
             switch (type)
             {
@@ -207,17 +310,7 @@ namespace subdomainLookup
             }
         }
 
-        public void start()
-        {
-            if (!tb_Domain.Text.ToLower().StartsWith("http://") && !tb_Domain.Text.ToLower().StartsWith("https://"))
-            {
-                tb_Domain.Text = "http://" + tb_Domain.Text;
-            }
-
-            t = new Thread(new ThreadStart(startBrute));
-            t.Start();
-        }
-
+        
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             run = false;
@@ -249,6 +342,76 @@ namespace subdomainLookup
                 fd.url = lv_Brute.FocusedItem.SubItems[2].Text;
                 fd.ShowDialog();
             }
+        }
+
+        private void btn_Brute_Click(object sender, EventArgs e)
+        {
+            tc_Tabs.SelectedIndex = 0;
+        }
+
+        private void btn_Google_Click(object sender, EventArgs e)
+        {
+            tc_Tabs.SelectedIndex = 1;
+        }
+
+        private void btn_List_Click(object sender, EventArgs e)
+        {
+            tc_Tabs.SelectedIndex = 2;
+        }
+
+        public void start()
+        {
+            if (!tb_Domain.Text.ToLower().StartsWith("http://") && !tb_Domain.Text.ToLower().StartsWith("https://"))
+            {
+                tb_Domain.Text = "http://" + tb_Domain.Text;
+            }
+
+            if (tc_Tabs.SelectedIndex == 0)
+            {
+                currentSet = tb_At.Text;
+
+                t = new Thread(new ThreadStart(startBrute));
+            }
+            else if (tc_Tabs.SelectedIndex == 1)
+            {
+               
+            }
+            else
+            {
+                t = new Thread(new ThreadStart(startList));
+            }
+
+            Properties.Settings.Default.s_LastUrl = tb_Domain.Text;
+            Properties.Settings.Default.s_LastMode = tc_Tabs.SelectedIndex;
+            Properties.Settings.Default.Save();
+
+            delay = tb_Delay.Value;
+
+            t.Start();
+        }
+
+        private void btn_ListBrowse_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Text Files|*.lst;*.txt;*.rtf|XML Files|*.xml;*.html|All Files|*.*";
+            ofd.Title = "Open List file";
+
+            if(ofd.ShowDialog() == DialogResult.OK)
+            {
+                tb_ListFile.Text = ofd.FileName;
+
+                words = File.ReadAllLines(ofd.FileName);
+                pb_List_Index.Maximum = words.Length;
+                pb_List_Index.Value = 0;
+
+                Properties.Settings.Default.s_ListFile = ofd.FileName;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private void tb_Delay_ValueChanged(object sender, EventArgs e)
+        {
+            lbl_DelayMS.Text = tb_Delay.Value + "ms";
         }
     }
 }
