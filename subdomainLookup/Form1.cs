@@ -23,14 +23,17 @@ namespace subdomainLookup
         public int currentLen = 1;
         public int charset = 5;
         public int delay = 200;
+        HttpWebRequest req = null;
+
+        public string urlStart = "";
+
+        public bool prefix = true;
 
         Thread t = null;
 
         int pagesFound = 0;
 
         string proxy = "";
-
-        HttpWebRequest req = null;
 
         public string _URL_ = "";
 
@@ -98,37 +101,75 @@ namespace subdomainLookup
         public void startList()
         {
             pagesFound = 0;
+            
 
             for (int i = 0; i < words.Length; i++)
             {
-                Thread.Sleep(delay);
                 
-
                 if (!run)
                 {
                     break;
                 }
 
-                _URL_ = tb_Domain.Text + "/" + words[i];
-
-                var req = getreq(_URL_);
-                req.UserAgent = generateUA();
-
-                try
+                if (prefix)
                 {
-                    if (i == 1 || i % 5 == 0)
+                    _URL_ = tb_Domain.Text;
+
+                    string __url = _URL_;
+                    if (__url.ToLower().StartsWith("https://"))
                     {
-                        this.Invoke(new myDelegate(refreshDataList), i + "", pagesFound + "", "");
+                        urlStart = _URL_.Substring(0, 8);
+                        __url = _URL_.Remove(0, 8);
+                    }
+                    else if (__url.ToLower().StartsWith("http://"))
+                    {
+                        urlStart = _URL_.Substring(0, 7);
+                        __url = _URL_.Remove(0, 7);
+                    }
+                    
+                    if (__url.ToLower().StartsWith("www."))
+                    {
+                        urlStart += __url.Substring(0, 4);
                     }
 
-                    var resp = (HttpWebResponse)req.GetResponse();
+                    if (urlStart != "")
+                    {
+                        _URL_ = _URL_.Replace(urlStart, "");
+                    }
 
-                    pagesFound++;
-
-
-                    this.Invoke(new myDelegate(fillList), i + "", words[i], _URL_);
+                    _URL_ = correctUrl2(words[i] + "." + _URL_);
                 }
-                catch { }
+                else
+                {
+                    Thread.Sleep(delay);
+                    _URL_ = tb_Domain.Text + "/" + words[i];
+                }
+
+                req = getreq(_URL_);
+                if(req != null)
+                {
+                    req.UserAgent = generateUA();
+                    req.Timeout = 10000;
+
+
+
+
+                    try
+                    {
+                        if (i == 1 || i % 5 == 0)
+                        {
+                            this.Invoke(new myDelegate(refreshDataList), i + "", pagesFound + "", "");
+                        }
+
+                        var resp = (HttpWebResponse)req.GetResponse();
+
+                        pagesFound++;
+
+
+                        this.Invoke(new myDelegate(fillList), i + "", words[i], _URL_);
+                    }
+                    catch { }
+                }
             }
 
             t = null;
@@ -142,22 +183,53 @@ namespace subdomainLookup
 
             while (true)
             {
-                Thread.Sleep(10);
-
                 i++;
 
                 if (!run)
                 {
                     break;
                 }
+
                 c_set.updateSet(charsInt, currentLen, out currentLen, len, currentSet, out currentSet, chars);
+                
 
-                //currentSet += "a";
+                if (prefix)
+                {
+                    _URL_ = tb_Domain.Text;
 
-                _URL_ = tb_Domain.Text + "/" + currentSet;
+                    string __url = _URL_;
+                    if (__url.ToLower().StartsWith("https://"))
+                    {
+                        urlStart = _URL_.Substring(0, 8);
+                        __url = _URL_.Remove(0, 8);
+                    }
+                    else if (__url.ToLower().StartsWith("http://"))
+                    {
+                        urlStart = _URL_.Substring(0, 7);
+                        __url = _URL_.Remove(0, 7);
+                    }
+
+                    if (__url.ToLower().StartsWith("www."))
+                    {
+                        urlStart += __url.Substring(0, 4);
+                    }
+
+                    if (urlStart != "")
+                    {
+                        _URL_ = _URL_.Replace(urlStart, "");
+                    }
+
+                    _URL_ = correctUrl2(currentSet + "." + _URL_);
+                }
+                else
+                {
+                    Thread.Sleep(delay);
+                    _URL_ = tb_Domain.Text + "/" + currentSet;
+                }
 
                 var req = getreq(_URL_);
                 req.UserAgent = generateUA();
+                req.Timeout = 10000;
 
                 try
                 {
@@ -238,14 +310,21 @@ namespace subdomainLookup
 
         public HttpWebRequest getreq(string url)
         {
-            var req = HttpWebRequest.Create(url);
-            req.Method = "GET";
-            
-            WebProxy myProxy = new WebProxy();
-            // Obtain the Proxy Prperty of the  Default browser.  
-            //myProxy = (WebProxy)req.Proxy;
+            try
+            {
+                var req = HttpWebRequest.Create(url);
+                req.Method = "GET";
 
-            return (HttpWebRequest)req;
+                WebProxy myProxy = new WebProxy();
+                // Obtain the Proxy Prperty of the  Default browser.  
+                //myProxy = (WebProxy)req.Proxy;
+
+                return (HttpWebRequest)req;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         private void btn_Start_Click(object sender, EventArgs e)
@@ -361,10 +440,7 @@ namespace subdomainLookup
 
         public void start()
         {
-            if (!tb_Domain.Text.ToLower().StartsWith("http://") && !tb_Domain.Text.ToLower().StartsWith("https://"))
-            {
-                tb_Domain.Text = "http://" + tb_Domain.Text;
-            }
+            correctUrl();
 
             if (tc_Tabs.SelectedIndex == 0)
             {
@@ -374,7 +450,7 @@ namespace subdomainLookup
             }
             else if (tc_Tabs.SelectedIndex == 1)
             {
-               
+
             }
             else
             {
@@ -388,6 +464,20 @@ namespace subdomainLookup
             delay = tb_Delay.Value;
 
             t.Start();
+        }
+
+        private void correctUrl()
+        {
+            if (!tb_Domain.Text.ToLower().StartsWith("http://") && !tb_Domain.Text.ToLower().StartsWith("https://"))
+            {
+                tb_Domain.Text = "http://" + tb_Domain.Text;
+            }
+        }
+
+        private string correctUrl2(string url)
+        {
+            url = urlStart + url;
+            return url;
         }
 
         private void btn_ListBrowse_Click(object sender, EventArgs e)
