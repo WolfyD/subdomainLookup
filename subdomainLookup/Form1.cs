@@ -24,6 +24,7 @@ namespace subdomainLookup
         public int charset = 5;
         public int delay = 200;
         HttpWebRequest req = null;
+        public string searchText = "";
 
         public string urlStart = "";
 
@@ -96,247 +97,6 @@ namespace subdomainLookup
             }
 
             tb_Domain.Text = Properties.Settings.Default.s_LastUrl;
-        }
-
-        //TODO: LIST
-        public void startList()
-        {
-            pagesFound = 0;
-            
-
-            for (int i = 0; i < words.Length; i++)
-            {
-                
-                if (!run)
-                {
-                    break;
-                }
-
-                if (prefix)
-                {
-                    _URL_ = tb_Domain.Text;
-
-                    string __url = _URL_;
-                    if (__url.ToLower().StartsWith("https://"))
-                    {
-                        urlStart = _URL_.Substring(0, 8);
-                        __url = _URL_.Remove(0, 8);
-                    }
-                    else if (__url.ToLower().StartsWith("http://"))
-                    {
-                        urlStart = _URL_.Substring(0, 7);
-                        __url = _URL_.Remove(0, 7);
-                    }
-                    
-                    if (__url.ToLower().StartsWith("www."))
-                    {
-                        urlStart += __url.Substring(0, 4);
-                    }
-
-                    if (urlStart != "")
-                    {
-                        _URL_ = _URL_.Replace(urlStart, "");
-                    }
-
-                    _URL_ = correctUrl2(words[i] + "." + _URL_);
-                }
-                else
-                {
-                    Thread.Sleep(delay);
-                    _URL_ = tb_Domain.Text + "/" + words[i];
-                }
-
-                req = getreq(_URL_);
-                if(req != null)
-                {
-                    req.UserAgent = generateUA();
-                    req.Timeout = 10000;
-
-
-
-
-                    try
-                    {
-                        if (i == 1 || i % 5 == 0 && i != 0)
-                        {
-                            this.Invoke(new myDelegate(refreshDataList), i + "", pagesFound + "", words.Length + "");
-                        }
-
-                        var resp = (HttpWebResponse)req.GetResponse();
-
-                        pagesFound++;
-
-
-                        this.Invoke(new myDelegate(fillList), i + "", words[i], _URL_);
-                    }
-                    catch { }
-                }
-            }
-
-            t = null;
-        }
-
-        //TODO: BRUTE
-        public void startBrute()
-        {
-            pagesFound = 0;
-            c_set.setupCharset(charset, out chars, out len);
-
-            if(tb_Start.Text != "")
-            {
-                charsInt = new int[tb_Start.Text.Length];
-                for(int ii = 0; ii < charsInt.Length; ii++)
-                {
-                    char c = tb_Start.Text[ii];
-                    int charint = chars.IndexOf(c) + 1;
-                    charsInt[ii] = charint;
-                }
-
-                currentLen = charsInt.Length;
-                currentSet = tb_Start.Text;
-
-                c_set.updateSet(charsInt, currentLen, out currentLen, len, currentSet, out currentSet, chars);
-            }
-
-            int i = 0;
-
-            while (true)
-            {
-                i++;
-
-                if (!run)
-                {
-                    break;
-                }
-
-                c_set.updateSet(charsInt, currentLen, out currentLen, len, currentSet, out currentSet, chars);
-                
-
-                if (prefix)
-                {
-                    _URL_ = tb_Domain.Text;
-
-                    string __url = _URL_;
-                    if (__url.ToLower().StartsWith("https://"))
-                    {
-                        urlStart = _URL_.Substring(0, 8);
-                        __url = _URL_.Remove(0, 8);
-                    }
-                    else if (__url.ToLower().StartsWith("http://"))
-                    {
-                        urlStart = _URL_.Substring(0, 7);
-                        __url = _URL_.Remove(0, 7);
-                    }
-
-                    if (__url.ToLower().StartsWith("www."))
-                    {
-                        urlStart += __url.Substring(0, 4);
-                    }
-
-                    if (urlStart != "")
-                    {
-                        _URL_ = _URL_.Replace(urlStart, "");
-                    }
-
-                    _URL_ = correctUrl2(currentSet + "." + _URL_);
-                }
-                else
-                {
-                    Thread.Sleep(delay);
-                    _URL_ = tb_Domain.Text + "/" + currentSet;
-                }
-
-                var req = getreq(_URL_);
-                req.UserAgent = generateUA();
-                req.Timeout = 10000;
-
-                try
-                {
-                    if (i == 1 || i % 5 == 0)
-                    {
-                        this.Invoke(new myDelegate(refreshDataBrute), i + "", currentSet, "");
-                    }
-
-                    var resp = (HttpWebResponse)req.GetResponse();
-
-                    pagesFound++;
-                    
-
-                    this.Invoke(new myDelegate(fillList), i + "", currentSet, _URL_);
-                }
-                catch { }
-            }
-
-            t = null;
-        }
-
-        public delegate void myDelegate(string s1, string s2, string s3);
-        public void refreshDataBrute(string s1, string s2, string s3)
-        {
-            lbl_Pages.Text = s1 + "/" + pagesFound;
-            tb_At.Text = s2;
-        }
-        public void refreshDataList(string s1, string s2, string s3)
-        {
-            try
-            {
-                lbl_List_Index.Text = s1;
-                lbl_List_Subs.Text = s2;
-
-                int i1 = 0;
-                int i2 = 0;
-                int i3 = 0;
-                int.TryParse(s1, out i1);
-                int.TryParse(s2, out i2);
-                int.TryParse(s3, out i3);
-
-                if (pb_List_Index.Maximum != i3)
-                {
-                    pb_List_Index.Maximum = i3;
-                }
-
-                lbl_Percent.Text = (((100 * 1.0f) * ((i1 * 1.0f)) / i3)) + "%";
-                pb_List_Index.Value++;
-            }
-            catch { }
-        }
-        public void fillBrute(string s1, string s2, string s3)
-        {
-            var lvi = new ListViewItem();
-            lvi.Text = s1;
-            lvi.SubItems.Add(s2);
-            lvi.SubItems.Add(s3);
-
-            lvi.BackColor = (lv_Brute.Items.Count % 2 == 0 ? Color.LightYellow : Color.LightGray);
-
-            lv_Brute.Items.Add(lvi);
-
-            lv_Brute.Refresh();
-
-            if (!File.Exists("brute_tmp.txt")) { File.Create("brute_tmp.txt").Close(); }
-            if (!File.Exists("brute_tmp2.txt")) { File.Create("brute_tmp2.txt").Close(); }
-
-            File.AppendAllText("brute_tmp.txt", s3 + "\r\n");
-            File.AppendAllText("brute_tmp2.txt", DateTime.Now.ToShortTimeString().PadRight(10) + " - " + s1.PadLeft(6, '0') + " - " + s2.PadRight(10, ' ') + "\t - \t" + s3 + "\r\n");
-
-        }
-        public void fillList(string s1, string s2, string s3)
-        {
-            var lvi = new ListViewItem();
-            lvi.Text = s1;
-            lvi.SubItems.Add(s2);
-            lvi.SubItems.Add(s3);
-
-            lvi.BackColor = (lv_Brute.Items.Count % 2 == 0 ? Color.LightYellow : Color.LightGray);
-            lv_List.Items.Add(lvi);
-            lv_List.Refresh();
-
-            if (!File.Exists("list_tmp.txt")) { File.Create("list_tmp.txt").Close(); }
-            if (!File.Exists("list_tmp2.txt")) { File.Create("list_tmp2.txt").Close(); }
-
-            File.AppendAllText("list_tmp.txt", s3 + "\r\n");
-            File.AppendAllText("list_tmp2.txt", DateTime.Now.ToShortTimeString().PadRight(10) + " - " + s1.PadLeft(6, '0') + " - " + s2.PadRight(10, ' ') + "\t - \t" + s3 + "\r\n");
-
         }
 
         public HttpWebRequest getreq(string url)
@@ -471,6 +231,7 @@ namespace subdomainLookup
 
         public void start()
         {
+            searchText = tb_Domain.Text;
             prefix = cb_AppendFront.Checked;
 
             correctUrl();
@@ -576,5 +337,324 @@ namespace subdomainLookup
                 fd.ShowDialog();
             }
         }
+
+        private void label13_Click(object sender, EventArgs e)
+        {
+            cb_AppendFront.Checked = !cb_AppendFront.Checked;
+        }
+
+        //TODO: Google
+        public void startGoogle()
+        {
+            pagesFound = 0;
+            string querystring = "";
+
+
+            for (int i = 0; i < words.Length; i++)
+            {
+
+                if (!run)
+                {
+                    break;
+                }
+
+                _URL_ = "https://www.google.hu/search?num=50&q=" + searchText + querystring;
+
+                req = getreq(_URL_);
+                if (req != null)
+                {
+                    req.UserAgent = generateUA();
+                    req.Timeout = 10000;
+
+                    try
+                    {
+                        if (i == 1 || i % 5 == 0 && i != 0)
+                        {
+                            this.Invoke(new myDelegate(refreshDataList), i + "", pagesFound + "", words.Length + "");
+                        }
+
+                        var resp = (HttpWebResponse)req.GetResponse();
+                        string[] r2 = null;
+                        string txt = getResults(resp, out r2);
+
+                        if(txt != "X")
+                        {
+                            searchText += txt;
+                        }
+
+                        //TODO:r2
+
+                        pagesFound++;
+
+
+                        this.Invoke(new myDelegate(fillList), i + "", words[i], _URL_);
+                    }
+                    catch (TimeoutException tex) { this.Invoke(new myDelegate(fillList), i + "", "TIMEOUT: " + words[i], _URL_); }
+                    catch { }
+                }
+            }
+
+            this.Invoke(new myDelegate(refreshDataList), words.Length + "", pagesFound + "", words.Length + "");
+
+            t = null;
+        }
+
+        public string getResults(HttpWebResponse resp, out string[] r2)
+        {
+            String ret = "";
+
+
+
+            r2 = null;
+            return ret;
+        }
+
+        //TODO: LIST
+        public void startList()
+        {
+            pagesFound = 0;
+
+
+            for (int i = 0; i < words.Length; i++)
+            {
+
+                if (!run)
+                {
+                    break;
+                }
+
+                if (prefix)
+                {
+                    _URL_ = tb_Domain.Text;
+
+                    string __url = _URL_;
+                    if (__url.ToLower().StartsWith("https://"))
+                    {
+                        urlStart = _URL_.Substring(0, 8);
+                        __url = _URL_.Remove(0, 8);
+                    }
+                    else if (__url.ToLower().StartsWith("http://"))
+                    {
+                        urlStart = _URL_.Substring(0, 7);
+                        __url = _URL_.Remove(0, 7);
+                    }
+
+                    if (__url.ToLower().StartsWith("www."))
+                    {
+                        urlStart += __url.Substring(0, 4);
+                    }
+
+                    if (urlStart != "")
+                    {
+                        _URL_ = _URL_.Replace(urlStart, "");
+                    }
+
+                    _URL_ = correctUrl2(words[i] + "." + _URL_);
+                }
+                else
+                {
+                    Thread.Sleep(delay);
+                    _URL_ = tb_Domain.Text + "/" + words[i];
+                }
+
+                req = getreq(_URL_);
+                if (req != null)
+                {
+                    req.UserAgent = generateUA();
+                    req.Timeout = 10000;
+
+
+
+
+                    try
+                    {
+                        if (i == 1 || i % 5 == 0 && i != 0)
+                        {
+                            this.Invoke(new myDelegate(refreshDataList), i + "", pagesFound + "", words.Length + "");
+                        }
+
+                        var resp = (HttpWebResponse)req.GetResponse();
+
+                        pagesFound++;
+
+
+                        this.Invoke(new myDelegate(fillList), i + "", words[i], _URL_);
+                    }
+                    catch (TimeoutException tex) { this.Invoke(new myDelegate(fillList), i + "", "TIMEOUT: " + words[i], _URL_); }
+                    catch { }
+                }
+            }
+
+            this.Invoke(new myDelegate(refreshDataList), words.Length + "", pagesFound + "", words.Length + "");
+
+            t = null;
+        }
+
+        //TODO: BRUTE
+        public void startBrute()
+        {
+            pagesFound = 0;
+            c_set.setupCharset(charset, out chars, out len);
+
+            if (tb_Start.Text != "")
+            {
+                charsInt = new int[tb_Start.Text.Length];
+                for (int ii = 0; ii < charsInt.Length; ii++)
+                {
+                    char c = tb_Start.Text[ii];
+                    int charint = chars.IndexOf(c) + 1;
+                    charsInt[ii] = charint;
+                }
+
+                currentLen = charsInt.Length;
+                currentSet = tb_Start.Text;
+
+                c_set.updateSet(charsInt, currentLen, out currentLen, len, currentSet, out currentSet, chars);
+            }
+
+            int i = 0;
+
+            while (true)
+            {
+                i++;
+
+                if (!run)
+                {
+                    break;
+                }
+
+                c_set.updateSet(charsInt, currentLen, out currentLen, len, currentSet, out currentSet, chars);
+
+
+                if (prefix)
+                {
+                    _URL_ = tb_Domain.Text;
+
+                    string __url = _URL_;
+                    if (__url.ToLower().StartsWith("https://"))
+                    {
+                        urlStart = _URL_.Substring(0, 8);
+                        __url = _URL_.Remove(0, 8);
+                    }
+                    else if (__url.ToLower().StartsWith("http://"))
+                    {
+                        urlStart = _URL_.Substring(0, 7);
+                        __url = _URL_.Remove(0, 7);
+                    }
+
+                    if (__url.ToLower().StartsWith("www."))
+                    {
+                        urlStart += __url.Substring(0, 4);
+                    }
+
+                    if (urlStart != "")
+                    {
+                        _URL_ = _URL_.Replace(urlStart, "");
+                    }
+
+                    _URL_ = correctUrl2(currentSet + "." + _URL_);
+                }
+                else
+                {
+                    Thread.Sleep(delay);
+                    _URL_ = tb_Domain.Text + "/" + currentSet;
+                }
+
+                var req = getreq(_URL_);
+                req.UserAgent = generateUA();
+                req.Timeout = 10000;
+
+
+
+                try
+                {
+                    if (i == 1 || i % 5 == 0)
+                    {
+                        this.Invoke(new myDelegate(refreshDataBrute), i + "", currentSet, "");
+                    }
+
+                    var resp = (HttpWebResponse)req.GetResponse();
+
+                    pagesFound++;
+
+
+                    this.Invoke(new myDelegate(fillList), i + "", currentSet, _URL_);
+                }
+                catch (TimeoutException tex) { this.Invoke(new myDelegate(fillList), i + "", "TIMEOUT: " + currentSet, _URL_); }
+                catch { }
+            }
+
+            t = null;
+        }
+
+        public delegate void myDelegate(string s1, string s2, string s3);
+        public void refreshDataBrute(string s1, string s2, string s3)
+        {
+            lbl_Pages.Text = s1 + "/" + pagesFound;
+            tb_At.Text = s2;
+        }
+        public void refreshDataList(string s1, string s2, string s3)
+        {
+            try
+            {
+                lbl_List_Index.Text = s1;
+                lbl_List_Subs.Text = s2;
+
+                int i1 = 0;
+                int i2 = 0;
+                int i3 = 0;
+                int.TryParse(s1, out i1);
+                int.TryParse(s2, out i2);
+                int.TryParse(s3, out i3);
+
+                if (pb_List_Index.Maximum != i3)
+                {
+                    pb_List_Index.Maximum = i3;
+                }
+
+                lbl_Percent.Text = (((100 * 1.0f) * ((i1 * 1.0f)) / (i3 * 1.0f))) + "%";
+                pb_List_Index.Value = i1;
+            }
+            catch { }
+        }
+        public void fillBrute(string s1, string s2, string s3)
+        {
+            var lvi = new ListViewItem();
+            lvi.Text = s1;
+            lvi.SubItems.Add(s2);
+            lvi.SubItems.Add(s3);
+
+            lvi.BackColor = (lv_Brute.Items.Count % 2 == 0 ? Color.LightYellow : Color.LightGray);
+
+            lv_Brute.Items.Add(lvi);
+
+            lv_Brute.Refresh();
+
+            if (!File.Exists("brute_tmp.txt")) { File.Create("brute_tmp.txt").Close(); }
+            if (!File.Exists("brute_tmp2.txt")) { File.Create("brute_tmp2.txt").Close(); }
+
+            File.AppendAllText("brute_tmp.txt", s3 + "\r\n");
+            File.AppendAllText("brute_tmp2.txt", DateTime.Now.ToShortTimeString().PadRight(10) + " - " + s1.PadLeft(6, '0') + " - " + s2.PadRight(10, ' ') + "\t - \t" + s3 + "\r\n");
+
+        }
+        public void fillList(string s1, string s2, string s3)
+        {
+            var lvi = new ListViewItem();
+            lvi.Text = s1;
+            lvi.SubItems.Add(s2);
+            lvi.SubItems.Add(s3);
+
+            lvi.BackColor = (lv_Brute.Items.Count % 2 == 0 ? Color.LightYellow : Color.LightGray);
+            lv_List.Items.Add(lvi);
+            lv_List.Refresh();
+
+            if (!File.Exists("list_tmp.txt")) { File.Create("list_tmp.txt").Close(); }
+            if (!File.Exists("list_tmp2.txt")) { File.Create("list_tmp2.txt").Close(); }
+
+            File.AppendAllText("list_tmp.txt", s3 + "\r\n");
+            File.AppendAllText("list_tmp2.txt", DateTime.Now.ToShortTimeString().PadRight(10) + " - " + s1.PadLeft(6, '0') + " - " + s2.PadRight(10, ' ') + "\t - \t" + s3 + "\r\n");
+
+        }
+
     }
 }

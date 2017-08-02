@@ -48,6 +48,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tc_Tabs = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tb_Start = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
             this.lv_Brute = new System.Windows.Forms.ListView();
             this.ch_Brute_Id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ch_Brute_String = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -87,8 +89,6 @@
             this.lbl_DelayMS = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.cb_AppendFront = new System.Windows.Forms.CheckBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.tb_Start = new System.Windows.Forms.TextBox();
             this.ss_Status.SuspendLayout();
             this.ts_Tools.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -292,6 +292,22 @@
             this.tabPage1.Text = "Using BruteForce";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // tb_Start
+            // 
+            this.tb_Start.Location = new System.Drawing.Point(362, 3);
+            this.tb_Start.Name = "tb_Start";
+            this.tb_Start.Size = new System.Drawing.Size(124, 20);
+            this.tb_Start.TabIndex = 7;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(309, 6);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(47, 13);
+            this.label14.TabIndex = 6;
+            this.label14.Text = "Start at: ";
+            // 
             // lv_Brute
             // 
             this.lv_Brute.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -382,7 +398,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 4);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(558, 385);
+            this.tabPage2.Size = new System.Drawing.Size(712, 385);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Using Google";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -651,11 +667,13 @@
             // 
             this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label13.AutoSize = true;
+            this.label13.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label13.Location = new System.Drawing.Point(450, 6);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(80, 13);
             this.label13.TabIndex = 7;
             this.label13.Text = "Append to front";
+            this.label13.Click += new System.EventHandler(this.label13_Click);
             // 
             // cb_AppendFront
             // 
@@ -667,22 +685,6 @@
             this.cb_AppendFront.TabIndex = 8;
             this.cb_AppendFront.UseVisualStyleBackColor = true;
             this.cb_AppendFront.CheckedChanged += new System.EventHandler(this.cb_AppendFront_CheckedChanged);
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(309, 6);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(47, 13);
-            this.label14.TabIndex = 6;
-            this.label14.Text = "Start at: ";
-            // 
-            // tb_Start
-            // 
-            this.tb_Start.Location = new System.Drawing.Point(362, 3);
-            this.tb_Start.Name = "tb_Start";
-            this.tb_Start.Size = new System.Drawing.Size(124, 20);
-            this.tb_Start.TabIndex = 7;
             // 
             // Form1
             // 
