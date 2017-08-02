@@ -41,6 +41,7 @@
             this.btn_List = new System.Windows.Forms.ToolStripButton();
             this.btn_Google = new System.Windows.Forms.ToolStripButton();
             this.btn_Brute = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btn_StartStop = new System.Windows.Forms.Button();
             this.tb_Domain = new System.Windows.Forms.TextBox();
@@ -67,6 +68,10 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.btn_ListBrowse = new System.Windows.Forms.Button();
+            this.tb_ListFile = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.lbl_Percent = new System.Windows.Forms.Label();
             this.pb_List_Index = new System.Windows.Forms.ProgressBar();
             this.lbl_List_Subs = new System.Windows.Forms.Label();
             this.lbl_List_Index = new System.Windows.Forms.Label();
@@ -77,14 +82,13 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.lbl_Percent = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.tb_ListFile = new System.Windows.Forms.TextBox();
-            this.btn_ListBrowse = new System.Windows.Forms.Button();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.tb_Delay = new System.Windows.Forms.TrackBar();
             this.label8 = new System.Windows.Forms.Label();
             this.lbl_DelayMS = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.cb_AppendFront = new System.Windows.Forms.CheckBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.tb_Start = new System.Windows.Forms.TextBox();
             this.ss_Status.SuspendLayout();
             this.ts_Tools.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -101,7 +105,7 @@
             this.lbl_Status});
             this.ss_Status.Location = new System.Drawing.Point(0, 471);
             this.ss_Status.Name = "ss_Status";
-            this.ss_Status.Size = new System.Drawing.Size(566, 22);
+            this.ss_Status.Size = new System.Drawing.Size(720, 22);
             this.ss_Status.TabIndex = 0;
             this.ss_Status.Text = "statusStrip1";
             // 
@@ -128,7 +132,7 @@
             this.toolStripSeparator3});
             this.ts_Tools.Location = new System.Drawing.Point(0, 0);
             this.ts_Tools.Name = "ts_Tools";
-            this.ts_Tools.Size = new System.Drawing.Size(566, 25);
+            this.ts_Tools.Size = new System.Drawing.Size(720, 25);
             this.ts_Tools.TabIndex = 1;
             this.ts_Tools.Text = "toolStrip1";
             // 
@@ -211,6 +215,11 @@
             this.btn_Brute.Text = "toolStripButton4";
             this.btn_Brute.Click += new System.EventHandler(this.btn_Brute_Click);
             // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.btn_StartStop);
@@ -219,13 +228,13 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 25);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(566, 35);
+            this.panel1.Size = new System.Drawing.Size(720, 35);
             this.panel1.TabIndex = 2;
             // 
             // btn_StartStop
             // 
             this.btn_StartStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_StartStop.Location = new System.Drawing.Point(479, 5);
+            this.btn_StartStop.Location = new System.Drawing.Point(633, 5);
             this.btn_StartStop.Name = "btn_StartStop";
             this.btn_StartStop.Size = new System.Drawing.Size(75, 23);
             this.btn_StartStop.TabIndex = 2;
@@ -240,7 +249,7 @@
             this.tb_Domain.Font = new System.Drawing.Font("Courier New", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.tb_Domain.Location = new System.Drawing.Point(58, 2);
             this.tb_Domain.Name = "tb_Domain";
-            this.tb_Domain.Size = new System.Drawing.Size(415, 29);
+            this.tb_Domain.Size = new System.Drawing.Size(569, 29);
             this.tb_Domain.TabIndex = 1;
             // 
             // label1
@@ -262,11 +271,13 @@
             this.tc_Tabs.Location = new System.Drawing.Point(0, 60);
             this.tc_Tabs.Name = "tc_Tabs";
             this.tc_Tabs.SelectedIndex = 0;
-            this.tc_Tabs.Size = new System.Drawing.Size(566, 411);
+            this.tc_Tabs.Size = new System.Drawing.Size(720, 411);
             this.tc_Tabs.TabIndex = 3;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.tb_Start);
+            this.tabPage1.Controls.Add(this.label14);
             this.tabPage1.Controls.Add(this.lv_Brute);
             this.tabPage1.Controls.Add(this.label4);
             this.tabPage1.Controls.Add(this.lbl_Pages);
@@ -276,7 +287,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 4);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(549, 385);
+            this.tabPage1.Size = new System.Drawing.Size(712, 385);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Using BruteForce";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -294,7 +305,7 @@
             this.lv_Brute.GridLines = true;
             this.lv_Brute.Location = new System.Drawing.Point(11, 74);
             this.lv_Brute.Name = "lv_Brute";
-            this.lv_Brute.Size = new System.Drawing.Size(530, 305);
+            this.lv_Brute.Size = new System.Drawing.Size(684, 305);
             this.lv_Brute.TabIndex = 5;
             this.lv_Brute.UseCompatibleStateImageBehavior = false;
             this.lv_Brute.View = System.Windows.Forms.View.Details;
@@ -371,7 +382,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 4);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(549, 385);
+            this.tabPage2.Size = new System.Drawing.Size(558, 385);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Using Google";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -471,16 +482,54 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 4);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(558, 385);
+            this.tabPage3.Size = new System.Drawing.Size(712, 385);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Using List";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // btn_ListBrowse
+            // 
+            this.btn_ListBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_ListBrowse.Location = new System.Drawing.Point(628, 26);
+            this.btn_ListBrowse.Name = "btn_ListBrowse";
+            this.btn_ListBrowse.Size = new System.Drawing.Size(75, 23);
+            this.btn_ListBrowse.TabIndex = 19;
+            this.btn_ListBrowse.Text = "Select File";
+            this.btn_ListBrowse.UseVisualStyleBackColor = true;
+            this.btn_ListBrowse.Click += new System.EventHandler(this.btn_ListBrowse_Click);
+            // 
+            // tb_ListFile
+            // 
+            this.tb_ListFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tb_ListFile.Location = new System.Drawing.Point(217, 28);
+            this.tb_ListFile.Name = "tb_ListFile";
+            this.tb_ListFile.Size = new System.Drawing.Size(405, 20);
+            this.tb_ListFile.TabIndex = 18;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(182, 31);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(29, 13);
+            this.label9.TabIndex = 17;
+            this.label9.Text = "File: ";
+            // 
+            // lbl_Percent
+            // 
+            this.lbl_Percent.AutoSize = true;
+            this.lbl_Percent.Location = new System.Drawing.Point(364, 6);
+            this.lbl_Percent.Name = "lbl_Percent";
+            this.lbl_Percent.Size = new System.Drawing.Size(21, 13);
+            this.lbl_Percent.TabIndex = 16;
+            this.lbl_Percent.Text = "0%";
             // 
             // pb_List_Index
             // 
             this.pb_List_Index.Location = new System.Drawing.Point(185, 6);
             this.pb_List_Index.Name = "pb_List_Index";
-            this.pb_List_Index.Size = new System.Drawing.Size(100, 15);
+            this.pb_List_Index.Size = new System.Drawing.Size(173, 15);
             this.pb_List_Index.TabIndex = 15;
             // 
             // lbl_List_Subs
@@ -516,10 +565,13 @@
             this.lv_List.GridLines = true;
             this.lv_List.Location = new System.Drawing.Point(11, 74);
             this.lv_List.Name = "lv_List";
-            this.lv_List.Size = new System.Drawing.Size(539, 305);
+            this.lv_List.Size = new System.Drawing.Size(693, 305);
             this.lv_List.TabIndex = 12;
             this.lv_List.UseCompatibleStateImageBehavior = false;
             this.lv_List.View = System.Windows.Forms.View.Details;
+            this.lv_List.Click += new System.EventHandler(this.lv_List_Click);
+            this.lv_List.DoubleClick += new System.EventHandler(this.lv_List_DoubleClick);
+            this.lv_List.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lv_List_MouseClick);
             // 
             // ch_List_Id
             // 
@@ -562,49 +614,6 @@
             this.label12.TabIndex = 9;
             this.label12.Text = "Current Index: ";
             // 
-            // lbl_Percent
-            // 
-            this.lbl_Percent.AutoSize = true;
-            this.lbl_Percent.Location = new System.Drawing.Point(291, 6);
-            this.lbl_Percent.Name = "lbl_Percent";
-            this.lbl_Percent.Size = new System.Drawing.Size(21, 13);
-            this.lbl_Percent.TabIndex = 16;
-            this.lbl_Percent.Text = "0%";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(182, 31);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(29, 13);
-            this.label9.TabIndex = 17;
-            this.label9.Text = "File: ";
-            // 
-            // tb_ListFile
-            // 
-            this.tb_ListFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tb_ListFile.Location = new System.Drawing.Point(217, 28);
-            this.tb_ListFile.Name = "tb_ListFile";
-            this.tb_ListFile.Size = new System.Drawing.Size(251, 20);
-            this.tb_ListFile.TabIndex = 18;
-            // 
-            // btn_ListBrowse
-            // 
-            this.btn_ListBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_ListBrowse.Location = new System.Drawing.Point(474, 26);
-            this.btn_ListBrowse.Name = "btn_ListBrowse";
-            this.btn_ListBrowse.Size = new System.Drawing.Size(75, 23);
-            this.btn_ListBrowse.TabIndex = 19;
-            this.btn_ListBrowse.Text = "Select File";
-            this.btn_ListBrowse.UseVisualStyleBackColor = true;
-            this.btn_ListBrowse.Click += new System.EventHandler(this.btn_ListBrowse_Click);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
-            // 
             // tb_Delay
             // 
             this.tb_Delay.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -614,7 +623,7 @@
             this.tb_Delay.Location = new System.Drawing.Point(280, 2);
             this.tb_Delay.Maximum = 10000;
             this.tb_Delay.Name = "tb_Delay";
-            this.tb_Delay.Size = new System.Drawing.Size(77, 21);
+            this.tb_Delay.Size = new System.Drawing.Size(109, 21);
             this.tb_Delay.TabIndex = 4;
             this.tb_Delay.TickStyle = System.Windows.Forms.TickStyle.None;
             this.tb_Delay.ValueChanged += new System.EventHandler(this.tb_Delay_ValueChanged);
@@ -632,17 +641,56 @@
             // 
             this.lbl_DelayMS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_DelayMS.AutoSize = true;
-            this.lbl_DelayMS.Location = new System.Drawing.Point(363, 6);
+            this.lbl_DelayMS.Location = new System.Drawing.Point(395, 6);
             this.lbl_DelayMS.Name = "lbl_DelayMS";
             this.lbl_DelayMS.Size = new System.Drawing.Size(38, 13);
             this.lbl_DelayMS.TabIndex = 6;
             this.lbl_DelayMS.Text = "200ms";
             // 
+            // label13
+            // 
+            this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(450, 6);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(80, 13);
+            this.label13.TabIndex = 7;
+            this.label13.Text = "Append to front";
+            // 
+            // cb_AppendFront
+            // 
+            this.cb_AppendFront.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cb_AppendFront.AutoSize = true;
+            this.cb_AppendFront.Location = new System.Drawing.Point(533, 6);
+            this.cb_AppendFront.Name = "cb_AppendFront";
+            this.cb_AppendFront.Size = new System.Drawing.Size(15, 14);
+            this.cb_AppendFront.TabIndex = 8;
+            this.cb_AppendFront.UseVisualStyleBackColor = true;
+            this.cb_AppendFront.CheckedChanged += new System.EventHandler(this.cb_AppendFront_CheckedChanged);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(309, 6);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(47, 13);
+            this.label14.TabIndex = 6;
+            this.label14.Text = "Start at: ";
+            // 
+            // tb_Start
+            // 
+            this.tb_Start.Location = new System.Drawing.Point(362, 3);
+            this.tb_Start.Name = "tb_Start";
+            this.tb_Start.Size = new System.Drawing.Size(124, 20);
+            this.tb_Start.TabIndex = 7;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(566, 493);
+            this.ClientSize = new System.Drawing.Size(720, 493);
+            this.Controls.Add(this.cb_AppendFront);
+            this.Controls.Add(this.label13);
             this.Controls.Add(this.lbl_DelayMS);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.tb_Delay);
@@ -730,6 +778,10 @@
         private System.Windows.Forms.TrackBar tb_Delay;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label lbl_DelayMS;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.CheckBox cb_AppendFront;
+        private System.Windows.Forms.TextBox tb_Start;
+        private System.Windows.Forms.Label label14;
     }
 }
 

@@ -98,6 +98,7 @@ namespace subdomainLookup
             tb_Domain.Text = Properties.Settings.Default.s_LastUrl;
         }
 
+        //TODO: LIST
         public void startList()
         {
             pagesFound = 0;
@@ -156,9 +157,9 @@ namespace subdomainLookup
 
                     try
                     {
-                        if (i == 1 || i % 5 == 0)
+                        if (i == 1 || i % 5 == 0 && i != 0)
                         {
-                            this.Invoke(new myDelegate(refreshDataList), i + "", pagesFound + "", "");
+                            this.Invoke(new myDelegate(refreshDataList), i + "", pagesFound + "", words.Length + "");
                         }
 
                         var resp = (HttpWebResponse)req.GetResponse();
@@ -175,10 +176,28 @@ namespace subdomainLookup
             t = null;
         }
 
+        //TODO: BRUTE
         public void startBrute()
         {
             pagesFound = 0;
             c_set.setupCharset(charset, out chars, out len);
+
+            if(tb_Start.Text != "")
+            {
+                charsInt = new int[tb_Start.Text.Length];
+                for(int ii = 0; ii < charsInt.Length; ii++)
+                {
+                    char c = tb_Start.Text[ii];
+                    int charint = chars.IndexOf(c) + 1;
+                    charsInt[ii] = charint;
+                }
+
+                currentLen = charsInt.Length;
+                currentSet = tb_Start.Text;
+
+                c_set.updateSet(charsInt, currentLen, out currentLen, len, currentSet, out currentSet, chars);
+            }
+
             int i = 0;
 
             while (true)
@@ -259,15 +278,27 @@ namespace subdomainLookup
         }
         public void refreshDataList(string s1, string s2, string s3)
         {
-            lbl_List_Index.Text = s1;
-            lbl_List_Subs.Text = s2;
+            try
+            {
+                lbl_List_Index.Text = s1;
+                lbl_List_Subs.Text = s2;
 
-            int i1 = 0;
-            int i2 = 0;
-            int.TryParse(s1, out i1);
-            int.TryParse(s2, out i2);
-            
-            lbl_Percent.Text = (((100 * 1.0f) / (i1 * 1.0f)) * i2) + "%";
+                int i1 = 0;
+                int i2 = 0;
+                int i3 = 0;
+                int.TryParse(s1, out i1);
+                int.TryParse(s2, out i2);
+                int.TryParse(s3, out i3);
+
+                if (pb_List_Index.Maximum != i3)
+                {
+                    pb_List_Index.Maximum = i3;
+                }
+
+                lbl_Percent.Text = (((100 * 1.0f) * ((i1 * 1.0f)) / i3)) + "%";
+                pb_List_Index.Value++;
+            }
+            catch { }
         }
         public void fillBrute(string s1, string s2, string s3)
         {
@@ -440,6 +471,8 @@ namespace subdomainLookup
 
         public void start()
         {
+            prefix = cb_AppendFront.Checked;
+
             correctUrl();
 
             if (tc_Tabs.SelectedIndex == 0)
@@ -502,6 +535,46 @@ namespace subdomainLookup
         private void tb_Delay_ValueChanged(object sender, EventArgs e)
         {
             lbl_DelayMS.Text = tb_Delay.Value + "ms";
+        }
+
+        private void cb_AppendFront_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cb_AppendFront.Checked)
+            {
+                tb_Delay.Enabled = false;
+            }
+            else
+            {
+                tb_Delay.Enabled = true;
+            }
+        }
+
+        private void lv_List_Click(object sender, EventArgs e)
+        {
+            if (MouseButtons == MouseButtons.Middle)
+            {
+                f_Demo fd = new f_Demo();
+                fd.url = lv_List.FocusedItem.SubItems[2].Text;
+                fd.ShowDialog();
+            }
+        }
+
+        private void lv_List_DoubleClick(object sender, EventArgs e)
+        {
+            if (lv_Brute.FocusedItem != null)
+            {
+                System.Diagnostics.Process.Start(lv_List.FocusedItem.SubItems[2].Text);
+            }
+        }
+
+        private void lv_List_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                f_Demo fd = new f_Demo();
+                fd.url = lv_List.FocusedItem.SubItems[2].Text;
+                fd.ShowDialog();
+            }
         }
     }
 }
